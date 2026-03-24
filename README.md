@@ -77,6 +77,3 @@ O `renderer.py` é o único arquivo que chama `pygame.draw`. O `scoreboard.py` �
 
 ### Legibilidade
 Todas as constantes estão nomeadas no `settings.py`, sem números mágicos espalhados no código. Nomes descritivos em português seguindo o padrão PEP 8.
-
-### Documentação
-Todas as classes e métodos possuem docstrings explicando sua responsabilidade.

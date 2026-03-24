@@ -3,6 +3,7 @@ from settings import LARGURA, ALTURA, BOLA_RAIO, BOLA_VELOCIDADE, BRANCO
 
 
 class Bola:
+
     def __init__(self):
         self.raio = BOLA_RAIO
         self.resetar(direcao=1)
@@ -23,13 +24,18 @@ class Bola:
 
         if self.y - self.raio <= 0 or self.y + self.raio >= ALTURA:
             self.vel_y = -self.vel_y
+            return True
+        return False
 
     def rebater_raquete(self, raquete_rect):
         if self.rect.colliderect(raquete_rect):
             if raquete_rect.centerx < LARGURA // 2 and self.vel_x < 0:
                 self.vel_x = -self.vel_x
+                return True
             elif raquete_rect.centerx > LARGURA // 2 and self.vel_x > 0:
                 self.vel_x = -self.vel_x
+                return True
+        return False
 
     def saiu_pela_esquerda(self):
         return self.x + self.raio < 0

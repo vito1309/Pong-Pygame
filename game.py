@@ -6,9 +6,11 @@ from paddle import Raquete
 from scoreboard import Placar
 from ai_controller import ControladorIA
 from renderer import Renderer
+from audio_manager import AudioManager
 
 
 class Jogo:
+    
     def __init__(self):
         pygame.init()
         self.tela = pygame.display.set_mode((LARGURA, ALTURA))
@@ -16,6 +18,7 @@ class Jogo:
         self.clock = pygame.time.Clock()
         self.renderer = Renderer(self.tela)
         self.ia = ControladorIA()
+        self.audio = AudioManager()
 
     def _criar_entidades(self):
         self.bola = Bola()
@@ -54,16 +57,24 @@ class Jogo:
             self._processar_eventos()
             self._mover_jogador()
             self.ia.atualizar(self.raquete2, self.bola)
-            self.bola.atualizar()
-            self.bola.rebater_raquete(self.raquete1.rect)
-            self.bola.rebater_raquete(self.raquete2.rect)
+
+            bateu_parede = self.bola.atualizar()
+            if bateu_parede:
+                self.audio.tocar_parede()
+
+            if self.bola.rebater_raquete(self.raquete1.rect):
+                self.audio.tocar_raquete()
+            if self.bola.rebater_raquete(self.raquete2.rect):
+                self.audio.tocar_raquete()
 
             if self.bola.saiu_pela_esquerda():
                 self.placar.ponto_jogador2()
+                self.audio.tocar_ponto()
                 self.bola.resetar(direcao=1)
 
             if self.bola.saiu_pela_direita():
                 self.placar.ponto_jogador1()
+                self.audio.tocar_ponto()
                 self.bola.resetar(direcao=-1)
 
             vencedor = self.placar.vencedor()

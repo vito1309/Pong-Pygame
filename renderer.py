@@ -3,6 +3,7 @@ from settings import LARGURA, ALTURA, PRETO, BRANCO, CINZA
 
 
 class Renderer:
+
     def __init__(self, tela):
         self.tela = tela
         self.fonte_placar = pygame.font.SysFont(None, 48)
@@ -23,12 +24,13 @@ class Renderer:
         texto = self.fonte_placar.render(f"{placar.pontos_j1}  {placar.pontos_j2}", True, BRANCO)
         self.tela.blit(texto, texto.get_rect(center=(LARGURA // 2, 30)))
 
-    def desenhar_jogo(self, bola, raquete1, raquete2, placar):
+    def desenhar_jogo(self, bola, raquete1, raquete2, placar, powerup):
         self.limpar()
         self.desenhar_linha_central()
         raquete1.desenhar(self.tela)
         raquete2.desenhar(self.tela)
         bola.desenhar(self.tela)
+        powerup.desenhar(self.tela)
         self.desenhar_placar(placar)
 
     def desenhar_menu(self):

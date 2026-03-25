@@ -7,10 +7,11 @@ from scoreboard import Placar
 from ai_controller import ControladorIA
 from renderer import Renderer
 from audio_manager import AudioManager
+from powerup import GerenciadorPowerUp
 
 
 class Jogo:
-    
+
     def __init__(self):
         pygame.init()
         self.tela = pygame.display.set_mode((LARGURA, ALTURA))
@@ -25,6 +26,7 @@ class Jogo:
         self.raquete1 = Raquete(x=MARGEM_RAQUETE)
         self.raquete2 = Raquete(x=LARGURA - MARGEM_RAQUETE - RAQUETE_LARGURA)
         self.placar = Placar()
+        self.powerup = GerenciadorPowerUp()
 
     def _processar_eventos(self):
         for evento in pygame.event.get():
@@ -77,11 +79,13 @@ class Jogo:
                 self.audio.tocar_ponto()
                 self.bola.resetar(direcao=-1)
 
+            self.powerup.atualizar(self.bola, self.raquete1, self.raquete2)
+
             vencedor = self.placar.vencedor()
             if vencedor:
                 return vencedor
 
-            self.renderer.desenhar_jogo(self.bola, self.raquete1, self.raquete2, self.placar)
+            self.renderer.desenhar_jogo(self.bola, self.raquete1, self.raquete2, self.placar, self.powerup)
             pygame.display.flip()
             self.clock.tick(FPS)
 
